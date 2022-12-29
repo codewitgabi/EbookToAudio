@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ebook to Audio</title>
+    <style>
+        .container {
+            width: 300px;
+            box-sizing: border-box;
+            padding: 10px;
+            margin: 10% auto 2em auto;
+            border: 2px solid blue;
+            border-radius: 5px;
+        }
+        .title {
+            font-size: 1.5em;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            text-align: center;
+            color: red;
+        }
+        #filename {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        #run {
+            display: inline-block;
+            margin-top: 1em;
+            padding: 10px 20%;
+            font-size: 0.7em;
+            background: #fff;
+            color: red;
+            border: 1.4px solid red;
+        }
+        footer {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <legend class="title">Ebook to Audio</legend>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="error-message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" name="filename" id="filename" placeholder="Enter Path to file" required>
+            <button id="run">RUN</button>
+        </form>
+    </div>
+
+    <footer>
+        &copy;2022 codewitgabi
+    </footer>
+</body>
+</html>
