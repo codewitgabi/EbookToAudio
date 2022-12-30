@@ -51,7 +51,7 @@
             {% csrf_token %}
             <input type="text" name="filename" id="filename" placeholder="Enter Path to file" required>
         </form>
-        <button data-action="play" class="run">Play</button>
+        <!-- <button data-action="play" class="run">Play</button> -->
         <button data-action="save" class="run">Save Audio</button>
     </div>
 
@@ -80,7 +80,7 @@
     <script>
         var form = document.getElementById("form");
         var btns = document.getElementsByClassName("run");
-        const read_file_url = "{% url 'read_file' %}";
+        
         const save_audio_url = "{% url 'save_audio_url' %}";
         var displayError = document.getElementById("error-message");
 
@@ -94,36 +94,41 @@
                 const file = form.filename.value;
                 const extension = file.split(".")[1];
 
-                if (action === "play") {
+                // if (action === "play") {
+                //     if (extension == "txt" || extension == "pdf") {
+                //         readFile(file)
+                //     } else {
+                //         displayError.textContent = "Invalid file format";
+                //     };
+                // }
+                if (action === "save") {
                     if (extension == "txt" || extension == "pdf") {
-                        readFile(file)
+                        saveAudio(file)
                     } else {
                         displayError.textContent = "Invalid file format";
                     };
-                } else if (action === "save") {
-                    saveAudio(file);
                 }
             })
         }
 
-        function readFile (file) {
-            fetch (read_file_url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrftoken
-                },
-                body: JSON.stringify({"file": file})
-            })
-            .then(resp => resp.json())
-            .then(data => {
-                console.log(data);
-                form.filename.value = "";
-            })
-            .catch(error => {
-                alert(error);
-            })
-        }
+        // function readFile (file) {
+        //     fetch (read_file_url, {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             "X-CSRFToken": csrftoken
+        //         },
+        //         body: JSON.stringify({"file": file})
+        //     })
+        //     .then(resp => resp.json())
+        //     .then(data => {
+        //         console.log(data);
+        //         form.filename.value = "";
+        //     })
+        //     .catch(error => {
+        //         alert(error);
+        //     })
+        // }
 
         function saveAudio (file) {
             fetch (save_audio_url, {
