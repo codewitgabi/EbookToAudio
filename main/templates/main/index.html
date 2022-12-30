@@ -19,7 +19,7 @@
             font-weight: 500;
             margin-bottom: 20px;
         }
-        .error-message {
+        #error-message {
             text-align: center;
             color: red;
         }
@@ -28,10 +28,11 @@
             padding: 10px;
             box-sizing: border-box;
         }
-        #run {
+        .run {
             display: inline-block;
             margin-top: 1em;
-            padding: 10px 20%;
+            padding: 10px 10px;
+            width: 49%;
             font-size: 0.7em;
             background: #fff;
             color: red;
@@ -45,20 +46,105 @@
 <body>
     <div class="container">
         <legend class="title">Ebook to Audio</legend>
-        {% if messages %}
-            {% for message in messages %}
-                <p class="error-message">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-        <form action="" method="post" enctype="multipart/form-data">
+        <p id="error-message">{{ message }}</p>
+        <form action="" id="form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="text" name="filename" id="filename" placeholder="Enter Path to file" required>
-            <button id="run">RUN</button>
         </form>
+        <button data-action="play" class="run">Play</button>
+        <button data-action="save" class="run">Save Audio</button>
     </div>
 
     <footer>
         &copy;2022 codewitgabi
     </footer>
+
+    <script>
+		function getCookie(name) {
+		    let cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        const cookies = document.cookie.split(';');
+		        for (let i = 0; i < cookies.length; i++) {
+		            const cookie = cookies[i].trim();
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		const csrftoken = getCookie('csrftoken');
+	</script>
+
+    <script>
+        var form = document.getElementById("form");
+        var btns = document.getElementsByClassName("run");
+        const read_file_url = "{% url 'read_file' %}";
+        const save_audio_url = "{% url 'save_audio_url' %}";
+        var displayError = document.getElementById("error-message");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+        })
+
+        for (var btn of btns) {
+            btn.addEventListener("click", function () {
+                var action = this.dataset.action;
+                const file = form.filename.value;
+                const extension = file.split(".")[1];
+
+                if (action === "play") {
+                    if (extension == "txt" || extension == "pdf") {
+                        readFile(file)
+                    } else {
+                        displayError.textContent = "Invalid file format";
+                    };
+                } else if (action === "save") {
+                    saveAudio(file);
+                }
+            })
+        }
+
+        function readFile (file) {
+            fetch (read_file_url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({"file": file})
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data);
+                form.filename.value = "";
+            })
+            .catch(error => {
+                alert(error);
+            })
+        }
+
+        function saveAudio (file) {
+            fetch (save_audio_url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({"file": file})
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                form.filename.value = "";
+                alert(data);
+            })
+            .catch(error => {
+                alert(error);
+            })
+        }
+        
+    </script>
+
 </body>
 </html>
