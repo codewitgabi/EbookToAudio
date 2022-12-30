@@ -1,0 +1,35 @@
+.container {
+    width: 300px;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 10% auto 2em auto;
+    border: 2px solid blue;
+    border-radius: 5px;
+}
+.title {
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+#error-message {
+    text-align: center;
+    color: red;
+}
+#filename {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.run {
+    display: inline-block;
+    margin-top: 1em;
+    padding: 10px 10px;
+    width: 49%;
+    font-size: 0.7em;
+    background: #fff;
+    color: red;
+    border: 1.4px solid red;
+}
+footer {
+    text-align: center;
+}
