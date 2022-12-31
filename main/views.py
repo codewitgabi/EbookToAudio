@@ -17,6 +17,7 @@ def save_txt_audio(file):
             eng = pyttsx3.init()
             download_path = os.path.relpath(file).split(f"{os.path.sep}")[-1].split(".")[0]
             eng.save_to_file(content, f"{os.path.expanduser('~')}{os.path.sep}Downloads{os.path.sep}{download_path}.mp3")
+            print(f"{os.path.expanduser('~')}{os.path.sep}Downloads{os.path.sep}{download_path}.mp3")
             eng.runAndWait()
 
     except FileNotFoundError:
