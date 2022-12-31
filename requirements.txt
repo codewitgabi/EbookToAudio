@@ -2,3 +2,4 @@ Django>=3.2
 gunicorn==20.1.0
 psycopg2==2.9.5
 pyttsx3
+PyPDF2
