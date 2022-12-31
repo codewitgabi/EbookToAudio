@@ -63,6 +63,6 @@ function saveAudio (file) {
         alert(data);
     })
     .catch(error => {
-        alert(error);
+        alert("An error occured");
     })
 }

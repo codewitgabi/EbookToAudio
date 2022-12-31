@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["web-production-aa21.up.railway.app"]
 
+# CSRF origins
+CSRF_TRUSTED_ORIGINS = ["web-production-aa21.up.railway.app"]
 
 # Application definition
 
